@@ -10,7 +10,6 @@ import lombok.Data;
 public class ApplicationConfirmRequest {
 
     private static final int MIN_OTP_VALUE = 100000;
-
     private static final int MAX_OTP_VALUE = 999999;
 
     @NotNull(message = "'id' must be specified")

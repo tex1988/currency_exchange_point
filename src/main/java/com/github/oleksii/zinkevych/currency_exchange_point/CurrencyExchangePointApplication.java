@@ -46,5 +46,4 @@ public class CurrencyExchangePointApplication {
     public static void main(String[] args) {
         SpringApplication.run(CurrencyExchangePointApplication.class, args);
     }
-
 }

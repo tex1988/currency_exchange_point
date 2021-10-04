@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class InitControllerImpl implements InitController {
+
     private final BankService bankService;
 
     public ResponseEntity<String> startWorkDay() {

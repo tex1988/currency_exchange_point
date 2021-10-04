@@ -12,7 +12,6 @@ import lombok.Data;
 public class ApplicationCreateRequest {
 
     private final static int CURRENCY_NAME_LENGTH = 3;
-
     private final static int NAME_MAX_LENGTH = 50;
 
     @NotBlank(message = "The 'saleCurrency' must be specified")

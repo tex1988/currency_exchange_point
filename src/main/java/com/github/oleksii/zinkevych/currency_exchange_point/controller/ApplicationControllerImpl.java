@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class ApplicationControllerImpl implements ApplicationController {
+
     private final ApplicationService applicationService;
 
     @Override

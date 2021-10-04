@@ -7,6 +7,7 @@ import com.github.oleksii.zinkevych.currency_exchange_point.constant.Application
 
 @Converter
 public class ApplicationStatusAttributeConverter implements AttributeConverter<ApplicationStatus, String> {
+
     @Override
     public String convertToDatabaseColumn(ApplicationStatus applicationStatus) {
         if (applicationStatus == null) {
