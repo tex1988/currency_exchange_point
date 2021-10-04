@@ -25,7 +25,7 @@ public interface ApplicationController {
 
     @Operation(summary = "Create application", responses = {
         @ApiResponse(responseCode = "201", description = "Created", content = {@Content(mediaType = "application/json",
-        schema = @Schema(implementation = ApplicationResponse.class))}),
+            schema = @Schema(implementation = ApplicationResponse.class))}),
         @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(
             schema = @Schema(example = "TODO: Example"))),
         @ApiResponse(responseCode = "409", description = "Conflict", content = @Content(

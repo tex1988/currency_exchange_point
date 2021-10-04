@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleException(Exception e) {
         LOGGER.error("Exception: ", e);
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .contentType(MediaType.TEXT_PLAIN)
-                .body("Internal server error");
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .contentType(MediaType.TEXT_PLAIN)
+            .body("Internal server error");
     }
 }

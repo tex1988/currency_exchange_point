@@ -1,5 +1,8 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.service.common;
 
+import java.math.BigDecimal;
+
 public interface ExchangeService {
-    double calculateExchange(String saleCurrency, String purchaseCurrency, double purchaseAmount);
+
+    BigDecimal calculateExchange(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount);
 }

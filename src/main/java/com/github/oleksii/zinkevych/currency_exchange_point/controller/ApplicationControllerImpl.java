@@ -15,7 +15,7 @@ public class ApplicationControllerImpl implements ApplicationController {
 
     @Override
     public ApplicationResponse createApplication(ApplicationCreateRequest applicationCreateRequest) {
-        return  applicationService.createApplication(applicationCreateRequest);
+        return applicationService.createApplication(applicationCreateRequest);
     }
 
     @Override

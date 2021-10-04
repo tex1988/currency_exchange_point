@@ -16,13 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ExchangeServiceImpl implements ExchangeService {
+
     private final static String CURRENCY_NOT_FOUND = "Currency '%s' not found";
-    private final ExchangeRateRepository exchangeRateRepository;
+
     private static LocalDate localDate = LocalDate.now();
 
+    private final ExchangeRateRepository exchangeRateRepository;
+
     @Override
-    public double calculateExchange(String saleCurrency, String purchaseCurrency, double purchaseAmount) {
-        double result;
+    public BigDecimal calculateExchange(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount) {
+        BigDecimal result;
         if (purchaseCurrency.equals("BTC") || saleCurrency.equals("BTC")) {
             result = calculateForBtc(saleCurrency, purchaseCurrency, purchaseAmount);
         } else {
@@ -31,75 +34,68 @@ public class ExchangeServiceImpl implements ExchangeService {
         return result;
     }
 
-    private double calculateForCurrency(String saleCurrency, String purchaseCurrency, double purchaseAmount) {
-        double result;
+    private BigDecimal calculateForCurrency(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount) {
+        BigDecimal result;
         if (purchaseCurrency.equals("UAH")) {
-            result = round(getCurrencyAmountForUahSale(saleCurrency, purchaseAmount), 2);
+            result = getCurrencyAmountForUahSale(saleCurrency, purchaseAmount).setScale(2, RoundingMode.HALF_UP);
         } else if (saleCurrency.equals("UAH")) {
-            result = round(getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount), 2);
+            result = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount).setScale(2, RoundingMode.HALF_UP);
         } else {
-            double purchaseCurrencyInUah = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount);
-            double saleCurrencySaleRate = getCurrencySaleRate(saleCurrency);
-            result = round(purchaseCurrencyInUah / saleCurrencySaleRate, 2);
+            BigDecimal purchaseCurrencyInUah = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount);
+            BigDecimal saleCurrencySaleRate = getCurrencySaleRate(saleCurrency);
+            result = purchaseCurrencyInUah.divide(saleCurrencySaleRate, 2, RoundingMode.HALF_UP);
         }
         return result;
     }
 
-    private double calculateForBtc(String saleCurrency, String purchaseCurrency, double purchaseAmount) {
-        double result;
+    private BigDecimal calculateForBtc(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount) {
+        BigDecimal result;
         if (saleCurrency.equals("BTC") && purchaseCurrency.equals("USD")) {
-            result = round(getUsdAmountForBtcSale(purchaseAmount), 2);
+            result = getUsdAmountForBtcSale(purchaseAmount).setScale(2, RoundingMode.HALF_UP);
         } else if (saleCurrency.equals("USD") && purchaseCurrency.equals("BTC")) {
-            result = round(getBtcAmountFromUsdSale(purchaseAmount), 2);
+            result = getBtcAmountFromUsdSale(purchaseAmount).setScale(2, RoundingMode.HALF_UP);
         } else if (saleCurrency.equals("BTC")) {
-            double buyBtcRate = getCurrencyBuyRate("BTC");
-            double usdAmount = calculateForCurrency("USD", purchaseCurrency, purchaseAmount);
-            result = round(usdAmount / buyBtcRate, 2);
+            BigDecimal buyBtcRate = getCurrencyBuyRate("BTC");
+            BigDecimal usdAmount = calculateForCurrency("USD", purchaseCurrency, purchaseAmount);
+            result = usdAmount.divide(buyBtcRate, 5, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
         } else {
-            double saleBtcRate = getCurrencySaleRate("BTC");
-            double usdAmount = purchaseAmount * saleBtcRate;
-            result = calculateForCurrency(saleCurrency, "USD", usdAmount);
+            BigDecimal saleBtcRate = getCurrencySaleRate("BTC");
+            BigDecimal usdAmount = purchaseAmount.multiply(saleBtcRate);
+            result = calculateForCurrency(saleCurrency, "USD", usdAmount).setScale(2, RoundingMode.HALF_UP);
         }
         return result;
     }
 
-    private double getUahAmountForCurrencySale(String currency, double currencyAmount) {
-        double purchaseCurrencySaleRate = getCurrencySaleRate(currency);
-        return purchaseCurrencySaleRate * currencyAmount;
+    private BigDecimal getUahAmountForCurrencySale(String currency, BigDecimal currencyAmount) {
+        BigDecimal purchaseCurrencySaleRate = getCurrencySaleRate(currency);
+        return purchaseCurrencySaleRate.multiply(currencyAmount);
     }
 
-    private double getCurrencyAmountForUahSale(String currency, double uahAmount) {
-        double purchaseCurrencyBuyRate = getCurrencyBuyRate(currency);
-        return purchaseCurrencyBuyRate / uahAmount;
+    private BigDecimal getCurrencyAmountForUahSale(String currency, BigDecimal uahAmount) {
+        BigDecimal purchaseCurrencyBuyRate = getCurrencyBuyRate(currency);
+        return purchaseCurrencyBuyRate.divide(uahAmount, 5, RoundingMode.HALF_UP);
     }
 
-    private double getUsdAmountForBtcSale(double purchaseAmount) {
-        double buyBtcRate = getCurrencyBuyRate("BTC");
-        return purchaseAmount / buyBtcRate;
+    private BigDecimal getUsdAmountForBtcSale(BigDecimal purchaseAmount) {
+        BigDecimal buyBtcRate = getCurrencyBuyRate("BTC");
+        return purchaseAmount.divide(buyBtcRate, 5, RoundingMode.HALF_UP);
     }
 
-    private double getBtcAmountFromUsdSale(double purchaseAmount) {
-        double saleBtcRate = getCurrencySaleRate("BTC");
-        return purchaseAmount * saleBtcRate;
+    private BigDecimal getBtcAmountFromUsdSale(BigDecimal purchaseAmount) {
+        BigDecimal saleBtcRate = getCurrencySaleRate("BTC");
+        return purchaseAmount.multiply(saleBtcRate);
     }
 
-    private double getCurrencySaleRate(String currency) {
+    private BigDecimal getCurrencySaleRate(String currency) {
         return exchangeRateRepository.findByCcyAndDate(currency, localDate)
-                .orElseThrow(() -> new NotFoundExchangeServiceException(String.format(CURRENCY_NOT_FOUND, currency)))
-                .getSale();
+            .orElseThrow(() -> new NotFoundExchangeServiceException(String.format(CURRENCY_NOT_FOUND, currency)))
+            .getSale();
     }
 
-    private double getCurrencyBuyRate(String currency) {
+    private BigDecimal getCurrencyBuyRate(String currency) {
         return exchangeRateRepository.findByCcyAndDate(currency, localDate)
-                .orElseThrow(() -> new NotFoundExchangeServiceException(String.format(CURRENCY_NOT_FOUND, currency)))
-                .getBuy();
-    }
-
-    private double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+            .orElseThrow(() -> new NotFoundExchangeServiceException(String.format(CURRENCY_NOT_FOUND, currency)))
+            .getBuy();
     }
 
     @Scheduled(cron = "0 0 0 * * *")

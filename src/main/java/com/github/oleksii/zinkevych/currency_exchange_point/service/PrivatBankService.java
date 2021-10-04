@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class PrivatBankService implements BankService {
-    private final ExchangeRateRepository repository;
 
+    private final ExchangeRateRepository repository;
     private final PrivatBankClient pbClient;
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "pb", url="${pb.url}",
+@FeignClient(value = "pb", url = "${pb.url}",
     configuration = PrivatBankClient.PrivatBankClientConfig.class)
 public interface PrivatBankClient {
 

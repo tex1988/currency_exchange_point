@@ -1,10 +1,11 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Random;
 
 import com.github.oleksii.zinkevych.currency_exchange_point.entity.Application;
-import com.github.oleksii.zinkevych.currency_exchange_point.entity.common.ApplicationStatus;
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationCreateRequest;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.response.ApplicationResponse;
 import com.github.oleksii.zinkevych.currency_exchange_point.repository.ApplicationRepository;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
+
     private final static String APPLICATION_NOT_FOUND = "Application id: %s not found";
+
     private final ApplicationRepository applicationRepository;
     private final ExchangeService exchangeService;
     private final ModelMapper modelMapper;
@@ -54,10 +57,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         return status;
     }
 
-    private double calculateApplication(ApplicationCreateRequest applicationCreateRequest) {
+    private BigDecimal calculateApplication(ApplicationCreateRequest applicationCreateRequest) {
         String saleCurrency = applicationCreateRequest.getSaleCurrency();
-        String purchaseCurrency  = applicationCreateRequest.getPurchaseCurrency();
-        double purchaseAmount = applicationCreateRequest.getPurchaseAmount();
+        String purchaseCurrency = applicationCreateRequest.getPurchaseCurrency();
+        BigDecimal purchaseAmount = applicationCreateRequest.getPurchaseAmount();
         return exchangeService.calculateExchange(saleCurrency, purchaseCurrency, purchaseAmount);
     }
 }

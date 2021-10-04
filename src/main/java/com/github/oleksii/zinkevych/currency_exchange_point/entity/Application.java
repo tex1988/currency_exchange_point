@@ -1,14 +1,16 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Currency;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.github.oleksii.zinkevych.currency_exchange_point.entity.common.ApplicationStatus;
-import com.github.oleksii.zinkevych.currency_exchange_point.entity.common.ApplicationStatusAttributeConverter;
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
+import com.github.oleksii.zinkevych.currency_exchange_point.converter.ApplicationStatusAttributeConverter;
 import lombok.Data;
 
 @Data
@@ -18,13 +20,13 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String saleCurrency;
+    private Currency saleCurrency;
 
-    private String purchaseCurrency;
+    private Currency purchaseCurrency;
 
-    private Double purchaseAmount;
+    private BigDecimal purchaseAmount;
 
-    private Double dealAmount;
+    private BigDecimal dealAmount;
 
     private String firstName;
 

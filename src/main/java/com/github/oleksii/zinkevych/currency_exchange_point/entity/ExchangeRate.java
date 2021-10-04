@@ -1,5 +1,6 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +15,14 @@ public class ExchangeRate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String ccy;
+
     private String base_ccy;
-    private Double buy;
-    private Double sale;
+
+    private BigDecimal buy;
+
+    private BigDecimal sale;
+
     private LocalDate date;
 }

@@ -1,5 +1,9 @@
 package com.github.oleksii.zinkevych.currency_exchange_point;
 
+import java.util.Currency;
+
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +32,13 @@ public class CurrencyExchangePointApplication {
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+
+            Converter<String, Currency> stringCurrencyConverter = new AbstractConverter<>() {
+                protected Currency convert(String source) {
+                    return Currency.getInstance(source);
+                }
+            };
+            mapper.addConverter(stringCurrencyConverter);
             return mapper;
         }
     }

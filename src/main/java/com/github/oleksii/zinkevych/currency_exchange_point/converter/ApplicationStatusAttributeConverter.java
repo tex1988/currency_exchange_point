@@ -1,7 +1,9 @@
-package com.github.oleksii.zinkevych.currency_exchange_point.entity.common;
+package com.github.oleksii.zinkevych.currency_exchange_point.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
 
 @Converter
 public class ApplicationStatusAttributeConverter implements AttributeConverter<ApplicationStatus, String> {
