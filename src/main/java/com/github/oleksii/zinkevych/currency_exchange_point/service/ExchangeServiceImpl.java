@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ExchangeServiceImpl implements ExchangeService {
 
-    private final static String CURRENCY_NOT_FOUND = "Currency '%s' not found";
+    private static final String CURRENCY_NOT_FOUND = "Currency '%s' not found";
+
+    private static final RoundingMode HALF_UP_ROUNDING_MODE = RoundingMode.HALF_UP;
 
     private static LocalDate localDate = LocalDate.now();
 
@@ -37,13 +39,13 @@ public class ExchangeServiceImpl implements ExchangeService {
     private BigDecimal calculateForCurrency(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount) {
         BigDecimal result;
         if (purchaseCurrency.equals("UAH")) {
-            result = getCurrencyAmountForUahSale(saleCurrency, purchaseAmount).setScale(2, RoundingMode.HALF_UP);
+            result = getCurrencyAmountForUahSale(saleCurrency, purchaseAmount).setScale(2, HALF_UP_ROUNDING_MODE);
         } else if (saleCurrency.equals("UAH")) {
-            result = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount).setScale(2, RoundingMode.HALF_UP);
+            result = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount).setScale(2, HALF_UP_ROUNDING_MODE);
         } else {
             BigDecimal purchaseCurrencyInUah = getUahAmountForCurrencySale(purchaseCurrency, purchaseAmount);
             BigDecimal saleCurrencySaleRate = getCurrencySaleRate(saleCurrency);
-            result = purchaseCurrencyInUah.divide(saleCurrencySaleRate, 2, RoundingMode.HALF_UP);
+            result = purchaseCurrencyInUah.divide(saleCurrencySaleRate, 2, HALF_UP_ROUNDING_MODE);
         }
         return result;
     }
@@ -51,17 +53,17 @@ public class ExchangeServiceImpl implements ExchangeService {
     private BigDecimal calculateForBtc(String saleCurrency, String purchaseCurrency, BigDecimal purchaseAmount) {
         BigDecimal result;
         if (saleCurrency.equals("BTC") && purchaseCurrency.equals("USD")) {
-            result = getUsdAmountForBtcSale(purchaseAmount).setScale(2, RoundingMode.HALF_UP);
+            result = getUsdAmountForBtcSale(purchaseAmount).setScale(2, HALF_UP_ROUNDING_MODE);
         } else if (saleCurrency.equals("USD") && purchaseCurrency.equals("BTC")) {
-            result = getBtcAmountFromUsdSale(purchaseAmount).setScale(2, RoundingMode.HALF_UP);
+            result = getBtcAmountFromUsdSale(purchaseAmount).setScale(2, HALF_UP_ROUNDING_MODE);
         } else if (saleCurrency.equals("BTC")) {
             BigDecimal buyBtcRate = getCurrencyBuyRate("BTC");
             BigDecimal usdAmount = calculateForCurrency("USD", purchaseCurrency, purchaseAmount);
-            result = usdAmount.divide(buyBtcRate, 5, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+            result = usdAmount.divide(buyBtcRate, 5, RoundingMode.HALF_UP).setScale(2, HALF_UP_ROUNDING_MODE);
         } else {
             BigDecimal saleBtcRate = getCurrencySaleRate("BTC");
             BigDecimal usdAmount = purchaseAmount.multiply(saleBtcRate);
-            result = calculateForCurrency(saleCurrency, "USD", usdAmount).setScale(2, RoundingMode.HALF_UP);
+            result = calculateForCurrency(saleCurrency, "USD", usdAmount).setScale(2, HALF_UP_ROUNDING_MODE);
         }
         return result;
     }
@@ -73,12 +75,12 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     private BigDecimal getCurrencyAmountForUahSale(String currency, BigDecimal uahAmount) {
         BigDecimal purchaseCurrencyBuyRate = getCurrencyBuyRate(currency);
-        return purchaseCurrencyBuyRate.divide(uahAmount, 5, RoundingMode.HALF_UP);
+        return purchaseCurrencyBuyRate.divide(uahAmount, 5, HALF_UP_ROUNDING_MODE);
     }
 
     private BigDecimal getUsdAmountForBtcSale(BigDecimal purchaseAmount) {
         BigDecimal buyBtcRate = getCurrencyBuyRate("BTC");
-        return purchaseAmount.divide(buyBtcRate, 5, RoundingMode.HALF_UP);
+        return purchaseAmount.divide(buyBtcRate, 5, HALF_UP_ROUNDING_MODE);
     }
 
     private BigDecimal getBtcAmountFromUsdSale(BigDecimal purchaseAmount) {
@@ -102,4 +104,6 @@ public class ExchangeServiceImpl implements ExchangeService {
     private void getCurrentDate() {
         localDate = LocalDate.now();
     }
+
+    private void nothing(){}
 }
