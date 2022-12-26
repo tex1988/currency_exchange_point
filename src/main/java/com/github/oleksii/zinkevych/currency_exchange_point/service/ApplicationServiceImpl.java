@@ -34,7 +34,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             application.setCreateDate(LocalDateTime.now());
             application.setDealAmount(calculateApplication(applicationCreateRequest));
             application.setStatus(ApplicationStatus.NEW);
-            application.setOtp(new Random().nextInt(999999));
+            application.setOtp(new Random().nextInt(999999 - 100000) + 100000);
             applicationRepository.save(application);
             return modelMapper.map(application, ApplicationResponse.class);
         } catch (Exception e) {

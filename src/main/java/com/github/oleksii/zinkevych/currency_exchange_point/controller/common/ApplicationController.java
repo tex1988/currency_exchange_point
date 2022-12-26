@@ -1,6 +1,6 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.controller.common;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationConfirmRequest;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationCreateRequest;

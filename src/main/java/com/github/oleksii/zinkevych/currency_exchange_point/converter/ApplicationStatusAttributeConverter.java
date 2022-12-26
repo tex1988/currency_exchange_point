@@ -1,7 +1,7 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.converter;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
 
