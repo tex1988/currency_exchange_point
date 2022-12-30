@@ -16,12 +16,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class PrivatBankService implements BankService {
 
+    private final static Integer COURSE_ID = 5;
+
     private final ExchangeRateRepository repository;
     private final PrivatBankClient pbClient;
 
     @Override
     public void getExchangeRates() throws IllegalStateException {
-        List<ExchangeRate> exchangeRates = pbClient.getExchangeRates();
+        List<ExchangeRate> exchangeRates = pbClient.getExchangeRates(COURSE_ID);
         LocalDate date = LocalDate.now();
         exchangeRates.forEach(exchangeRate -> exchangeRate.setDate(date));
         repository.saveAll(exchangeRates);

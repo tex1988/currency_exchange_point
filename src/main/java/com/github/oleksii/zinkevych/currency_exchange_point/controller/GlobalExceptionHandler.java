@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundApplicationServiceException.class)
     public ResponseEntity<String> notFound(NotFoundApplicationServiceException e) {
-        LOGGER.warn("Exception: {}", e.getMessage());
+        log.warn("Exception: {}", e.getMessage());
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .contentType(MediaType.TEXT_PLAIN)
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> notValid(MethodArgumentNotValidException e) {
-        LOGGER.warn("Exception: {}", e.getMessage());
+        log.warn("Exception: {}", e.getMessage());
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .contentType(MediaType.TEXT_PLAIN)
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
-        LOGGER.error("Exception: ", e);
+        log.error("Exception: ", e);
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .contentType(MediaType.TEXT_PLAIN)
