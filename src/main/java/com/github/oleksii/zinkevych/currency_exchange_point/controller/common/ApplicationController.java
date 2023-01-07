@@ -1,7 +1,5 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.controller.common;
 
-import jakarta.validation.Valid;
-
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationConfirmRequest;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationCreateRequest;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.response.ApplicationResponse;
@@ -11,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

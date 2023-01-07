@@ -1,6 +1,8 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.controller;
 
-import com.github.oleksii.zinkevych.currency_exchange_point.controller.common.InitController;
+import java.util.Map;
+
+import com.github.oleksii.zinkevych.currency_exchange_point.controller.common.ExchangeController;
 import com.github.oleksii.zinkevych.currency_exchange_point.service.common.BankService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-public class InitControllerImpl implements InitController {
+public class ExchangeControllerImpl implements ExchangeController {
 
     private final BankService bankService;
 
-    public ResponseEntity<String> startWorkDay() {
+    public ResponseEntity<Map<String, ?>> updateExchanges() {
         bankService.getExchangeRates();
-        //return "{\"status\": 200, \"message\": \"Success\"}";
         return ResponseEntity
             .status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
-            .body("Succsess");
+            .body(Map.of("status", HttpStatus.OK.value(),
+                "success", true));
     }
 }

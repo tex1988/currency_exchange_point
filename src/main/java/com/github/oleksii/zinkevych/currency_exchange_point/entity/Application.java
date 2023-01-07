@@ -2,16 +2,15 @@ package com.github.oleksii.zinkevych.currency_exchange_point.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.Objects;
+
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
+import com.github.oleksii.zinkevych.currency_exchange_point.converter.ApplicationStatusAttributeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
-import com.github.oleksii.zinkevych.currency_exchange_point.converter.ApplicationStatusAttributeConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,8 +28,8 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Currency saleCurrency;
-    private Currency purchaseCurrency;
+    private String saleCurrency;
+    private String purchaseCurrency;
     private BigDecimal purchaseAmount;
     private BigDecimal dealAmount;
     private String firstName;

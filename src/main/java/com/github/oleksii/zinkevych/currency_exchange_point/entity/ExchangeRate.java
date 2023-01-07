@@ -1,13 +1,13 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,7 +29,7 @@ public class ExchangeRate {
     private String base_ccy;
     private BigDecimal buy;
     private BigDecimal sale;
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Override
     public boolean equals(Object o) {

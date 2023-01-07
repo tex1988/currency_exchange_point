@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import com.github.oleksii.zinkevych.currency_exchange_point.entity.Application;
 import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
+import com.github.oleksii.zinkevych.currency_exchange_point.entity.Application;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationCreateRequest;
 import com.github.oleksii.zinkevych.currency_exchange_point.model.response.ApplicationResponse;
 import com.github.oleksii.zinkevych.currency_exchange_point.repository.ApplicationRepository;

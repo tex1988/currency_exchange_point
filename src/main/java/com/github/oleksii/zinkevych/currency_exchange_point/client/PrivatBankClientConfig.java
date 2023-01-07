@@ -25,11 +25,11 @@ public class PrivatBankClientConfig {
     PrivatBankClient privatBankClient() {
         HttpClient httpClient = HttpClient.create()
             .wiretap(this.getClass().getCanonicalName(), LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL);
-        ClientHttpConnector conn = new ReactorClientHttpConnector(httpClient);
+        ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
 
         WebClient client = WebClient.builder()
             .baseUrl(pbUrl)
-            .clientConnector(conn)
+            .clientConnector(connector)
             .build();
         HttpServiceProxyFactory proxyFactory =
             HttpServiceProxyFactory.builder(WebClientAdapter.forClient(client)).build();

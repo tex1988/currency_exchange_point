@@ -1,11 +1,11 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.model.request;
 
 import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import lombok.Data;
 
 @Data

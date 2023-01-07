@@ -1,6 +1,6 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.github.oleksii.zinkevych.currency_exchange_point.client.PrivatBankClient;
@@ -24,7 +24,7 @@ public class PrivatBankService implements BankService {
     @Override
     public void getExchangeRates() throws IllegalStateException {
         List<ExchangeRate> exchangeRates = pbClient.getExchangeRates(COURSE_ID);
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         exchangeRates.forEach(exchangeRate -> exchangeRate.setDate(date));
         repository.saveAll(exchangeRates);
     }

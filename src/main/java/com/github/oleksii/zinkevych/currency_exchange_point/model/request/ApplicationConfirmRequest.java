@@ -3,7 +3,6 @@ package com.github.oleksii.zinkevych.currency_exchange_point.model.request;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-
 import lombok.Data;
 
 @Data

@@ -2,11 +2,13 @@ package com.github.oleksii.zinkevych.currency_exchange_point;
 
 import java.util.Currency;
 
+import com.github.oleksii.zinkevych.currency_exchange_point.service.common.BankService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -41,6 +43,13 @@ public class CurrencyExchangePointApplication {
             };
             mapper.addConverter(stringCurrencyConverter);
             return mapper;
+        }
+
+        @Bean
+        CommandLineRunner commandLineRunner(BankService bankService) {
+            return args -> {
+                bankService.getExchangeRates();
+            };
         }
     }
 
