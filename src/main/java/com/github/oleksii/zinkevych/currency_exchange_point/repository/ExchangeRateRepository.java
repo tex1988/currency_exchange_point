@@ -23,8 +23,25 @@ public interface ExchangeRateRepository extends CrudRepository<ExchangeRate, Lon
         AND er.date BETWEEN ? AND ?
         ORDER BY er.id DESC LIMIT 1
         """;
+
+    String FIND_BY_CCY_AND_BASE_CCY_AND_DATE_QUERY = """
+         SELECT er.id,
+                er.buy,
+                er.base_ccy,
+                er.ccy,
+                er.date,
+                er.sale
+        FROM exchange_rate er
+        WHERE er.ccy = ?
+        AND er.base_ccy = ?
+        AND er.date BETWEEN ? AND ?
+        ORDER BY er.id DESC LIMIT 1
+        """;
     @Query(value = FIND_BY_CCY_AND_DATE_QUERY, nativeQuery = true)
     Optional<ExchangeRate> findLastByCcyInDateRange(String ccy, LocalDateTime from, LocalDateTime to);
+
+    @Query(value = FIND_BY_CCY_AND_BASE_CCY_AND_DATE_QUERY, nativeQuery = true)
+    ExchangeRate findLastByCcyAndBaseCcyInDateRange(String ccy, String base_ccy, LocalDateTime from, LocalDateTime to);
 
     List<ExchangeRate> findAllByCcyAndDateBetween(String ccy, LocalDateTime from, LocalDateTime to);
 }

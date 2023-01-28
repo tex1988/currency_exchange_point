@@ -22,10 +22,11 @@ public class PrivatBankService implements BankService {
     private final PrivatBankClient pbClient;
 
     @Override
-    public void getExchangeRates() throws IllegalStateException {
+    public List<ExchangeRate> getExchangeRates() throws IllegalStateException {
         List<ExchangeRate> exchangeRates = pbClient.getExchangeRates(COURSE_ID);
         LocalDateTime date = LocalDateTime.now();
         exchangeRates.forEach(exchangeRate -> exchangeRate.setDate(date));
         repository.saveAll(exchangeRates);
+        return exchangeRates;
     }
 }

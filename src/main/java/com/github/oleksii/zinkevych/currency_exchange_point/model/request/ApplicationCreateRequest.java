@@ -2,6 +2,7 @@ package com.github.oleksii.zinkevych.currency_exchange_point.model.request;
 
 import java.math.BigDecimal;
 
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ExchangeMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -39,4 +40,7 @@ public class ApplicationCreateRequest {
     @Pattern(regexp = "^(\\+)?([- _():=+]?\\d[- _():=+]?){10,13}(\\s*)?$")
     @Size(min = 9, max = 13)
     private String phone;
+
+    @NotNull(message = "The 'exchangeMode' must be specified")
+    private ExchangeMode exchangeMode;
 }

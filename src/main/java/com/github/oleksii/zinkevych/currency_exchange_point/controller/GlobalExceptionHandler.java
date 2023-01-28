@@ -3,7 +3,8 @@ package com.github.oleksii.zinkevych.currency_exchange_point.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.NotFoundApplicationServiceException;
+import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.ApplicationServiceNotFoundException;
+import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.ExchangeServiceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,13 +19,22 @@ public class GlobalExceptionHandler {
 
     private static final String INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error";
 
-    @ExceptionHandler(NotFoundApplicationServiceException.class)
-    public ResponseEntity<Map<String, ?>> notFound(NotFoundApplicationServiceException e) {
-        log.warn("Exception: {}", e.getMessage());
+    @ExceptionHandler(ApplicationServiceNotFoundException.class)
+    public ResponseEntity<Map<String, ?>> applicationNotFound(ApplicationServiceNotFoundException e) {
+        return getNotFoundResponseEntity(e.getMessage());
+    }
+
+    @ExceptionHandler(ExchangeServiceNotFoundException.class)
+    public ResponseEntity<Map<String, ?>> exchangeNotFound(ExchangeServiceNotFoundException e) {
+        return getNotFoundResponseEntity(e.getMessage());
+    }
+
+    private ResponseEntity<Map<String, ?>> getNotFoundResponseEntity(String message) {
+        log.warn("Exception: {}", message);
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("success", false);
-        body.put("message", e.getMessage());
+        body.put("message", message);
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .contentType(MediaType.APPLICATION_JSON)
