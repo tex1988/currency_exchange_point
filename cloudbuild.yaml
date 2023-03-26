@@ -1,6 +1,7 @@
 steps:
   - name: 'gcr.io/cloud-builders/mvn'
     args: ['install']
+    dir: '/workspace'
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '--tag=gcr.io/$PROJECT_ID/spring-boot', '.']
     dir: '/workspace'
