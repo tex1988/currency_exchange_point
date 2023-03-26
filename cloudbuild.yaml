@@ -3,4 +3,5 @@ steps:
     args: ['install']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '--tag=gcr.io/$PROJECT_ID/spring-boot', '.']
+    dir: '/workspace'
 images: ['gcr.io/$PROJECT_ID/spring-boot']
