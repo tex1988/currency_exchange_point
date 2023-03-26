@@ -1,12 +1,17 @@
 package com.github.oleksii.zinkevych.currency_exchange_point.service.common;
 
-import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
+import java.util.List;
+
 import com.github.oleksii.zinkevych.currency_exchange_point.model.request.ApplicationCreateRequest;
-import com.github.oleksii.zinkevych.currency_exchange_point.model.response.ApplicationResponse;
+import com.github.oleksii.zinkevych.currency_exchange_point.model.response.ApplicationModel;
 
 public interface ApplicationService {
 
-    ApplicationResponse createApplication(ApplicationCreateRequest dto);
+    ApplicationModel findById(Long id);
 
-    ApplicationStatus confirmApplication(long id, int otp);
+    List<ApplicationModel> findAll();
+
+    ApplicationModel createApplication(ApplicationCreateRequest dto);
+
+    ApplicationModel confirmApplication(long id, int otp);
 }

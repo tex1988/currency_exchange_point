@@ -35,7 +35,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public BigDecimal calculateExchange(String saleCurrency, String purchaseCurrency,
-                                        BigDecimal purchaseAmount, ExchangeMode exchangeMode) {
+                                        BigDecimal purchaseAmount, ExchangeMode exchangeMode, String proxyCurrency) {
         BigDecimal result;
         List<ExchangeRate> exchangeRates = getExchangeRates();
         if (purchaseCurrency.equals(BTC) || saleCurrency.equals(BTC)) {

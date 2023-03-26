@@ -43,4 +43,8 @@ public class ApplicationCreateRequest {
 
     @NotNull(message = "The 'exchangeMode' must be specified")
     private ExchangeMode exchangeMode;
+
+    @Size(min = CURRENCY_NAME_LENGTH, max = CURRENCY_NAME_LENGTH,
+        message = "Length of 'purchaseCurrency' must be equals {max} characters")
+    private String proxyCurrency;
 }

@@ -7,5 +7,5 @@ import com.github.oleksii.zinkevych.currency_exchange_point.constant.ExchangeMod
 public interface ExchangeService {
 
     BigDecimal calculateExchange(String saleCurrency, String purchaseCurrency,
-                                 BigDecimal purchaseAmount, ExchangeMode exchangeMode);
+                                 BigDecimal purchaseAmount, ExchangeMode exchangeMode, String proxyCurrency);
 }

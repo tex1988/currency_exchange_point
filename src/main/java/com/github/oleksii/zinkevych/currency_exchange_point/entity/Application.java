@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.github.oleksii.zinkevych.currency_exchange_point.constant.ApplicationStatus;
-import com.github.oleksii.zinkevych.currency_exchange_point.converter.ApplicationStatusAttributeConverter;
-import jakarta.persistence.Convert;
+import com.github.oleksii.zinkevych.currency_exchange_point.constant.ExchangeMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +26,6 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String saleCurrency;
     private String purchaseCurrency;
     private BigDecimal purchaseAmount;
@@ -35,12 +33,12 @@ public class Application {
     private String firstName;
     private String lastName;
     private String phone;
-
-    @Convert(converter = ApplicationStatusAttributeConverter.class)
+    private ExchangeMode exchangeMode;
+    private String proxyCurrency;
     private ApplicationStatus status;
-
     private Integer otp;
     private LocalDateTime createDate;
+    private LocalDateTime confirmDate;
 
     @Override
     public boolean equals(Object o) {

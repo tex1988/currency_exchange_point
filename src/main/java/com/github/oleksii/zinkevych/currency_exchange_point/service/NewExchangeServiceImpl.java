@@ -34,12 +34,12 @@ public class NewExchangeServiceImpl implements ExchangeService {
 
     @Override
     public BigDecimal calculateExchange(String saleCurrency, String purchaseCurrency,
-                                        BigDecimal purchaseAmount, ExchangeMode exchangeMode) {
+                                        BigDecimal purchaseAmount, ExchangeMode exchangeMode, String proxyCurrency) {
         List<ExchangeRate> exchangeRates = getExchangeRates();
         BigDecimal dealAmount = null;
         switch (exchangeMode) {
             case DIRECT -> dealAmount = calculateDirect(saleCurrency, purchaseCurrency, purchaseAmount, exchangeRates);
-            case PROXY -> dealAmount = calculateProxy(saleCurrency, purchaseCurrency, purchaseAmount, exchangeRates);
+            case PROXY -> dealAmount = calculateProxy(saleCurrency, purchaseCurrency, purchaseAmount, exchangeRates, proxyCurrency);
         }
         return dealAmount;
     }
@@ -52,21 +52,21 @@ public class NewExchangeServiceImpl implements ExchangeService {
     }
 
     private BigDecimal calculateProxy(String saleCurrency, String purchaseCurrency,
-                                      BigDecimal purchaseAmount, List<ExchangeRate> exchangeRates) {
+                                      BigDecimal purchaseAmount, List<ExchangeRate> exchangeRates, String proxyCurrency) {
 
-        BigDecimal purchaseCurrencyInUAH = calculateForUAH(purchaseCurrency, purchaseAmount, exchangeRates);
-        BigDecimal buyRateInUahForSaleCurrency = getCurrencyBuyRate(saleCurrency, UAH, exchangeRates)
+        BigDecimal purchaseCurrencyInUAH = calculateForProxyCurrency(purchaseCurrency, proxyCurrency, purchaseAmount, exchangeRates);
+        BigDecimal buyRateInUahForSaleCurrency = getCurrencyBuyRate(saleCurrency, proxyCurrency, exchangeRates)
             .orElseThrow(
-                () -> new ExchangeServiceNotFoundException(String.format(EXCHANGE_NOT_FOUND, saleCurrency, UAH)));
+                () -> new ExchangeServiceNotFoundException(String.format(EXCHANGE_NOT_FOUND, saleCurrency, proxyCurrency)));
         return divide(purchaseCurrencyInUAH, buyRateInUahForSaleCurrency);
     }
 
-    private BigDecimal calculateForUAH(String saleCurrency, BigDecimal purchaseAmount, List<ExchangeRate> exchangeRates) {
+    private BigDecimal calculateForProxyCurrency(String saleCurrency, String proxyCurrency, BigDecimal purchaseAmount, List<ExchangeRate> exchangeRates) {
         Optional<BigDecimal> saleRateOptional;
-        if (saleCurrency.equals(UAH)) {
-            saleRateOptional = getCurrencySaleRate(UAH, saleCurrency, exchangeRates);
+        if (saleCurrency.equals(proxyCurrency)) {
+            saleRateOptional = getCurrencySaleRate(proxyCurrency, saleCurrency, exchangeRates);
         } else {
-            saleRateOptional = getCurrencySaleRate(saleCurrency, UAH, exchangeRates);
+            saleRateOptional = getCurrencySaleRate(saleCurrency, proxyCurrency, exchangeRates);
         }
         BigDecimal saleRate = saleRateOptional
             .orElseThrow(() -> new ExchangeServiceNotFoundException(EXCHANGE_NOT_FOUND));

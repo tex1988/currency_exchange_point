@@ -3,6 +3,7 @@ package com.github.oleksii.zinkevych.currency_exchange_point.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.ApplicationServiceNotConfirmedException;
 import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.ApplicationServiceNotFoundException;
 import com.github.oleksii.zinkevych.currency_exchange_point.service.exception.ExchangeServiceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,19 @@ public class GlobalExceptionHandler {
             .getDefaultMessage());
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(body);
+    }
+
+    @ExceptionHandler(ApplicationServiceNotConfirmedException.class)
+    public ResponseEntity<Map<String, ?>> notConfirmed(ApplicationServiceNotConfirmedException e) {
+        log.warn("Exception: {}", e.getMessage());
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
+        body.put("success", false);
+        body.put("message", e.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.UNPROCESSABLE_ENTITY)
             .contentType(MediaType.APPLICATION_JSON)
             .body(body);
     }
